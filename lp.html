@@ -1,0 +1,1661 @@
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rafael Alves | Landing Pages para Clínicas</title>
+    <meta
+      name="description"
+      content="Landing pages de alta conversão para clínicas. Transforme cliques em agendamentos."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              neon: "#00ff88",
+              "neon-dim": "#00cc6a",
+            },
+            fontFamily: { sans: ["Inter", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: #0a0a0a;
+        color: #f0f0f0;
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* ── FIX 1: z-index 0 para não cobrir conteúdo ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: 0; /* ERA 1 — estava cobrindo tudo */
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      }
+
+      /* ── FIX 2: sections acima do overlay ── */
+      section,
+      footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── Cursor ── */
+      .cursor {
+        width: 10px;
+        height: 10px;
+        background: #00ff88;
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      }
+      .cursor-glow {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 136, 0.08) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+      }
+      a,
+      button {
+        cursor: none;
+      }
+
+      /* ── Glass ── */
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .glass-neon {
+        background: rgba(0, 255, 136, 0.05);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+      }
+
+      /* ── Neon ── */
+      .neon-text {
+        color: #00ff88;
+        text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      }
+
+      /* ── Button ── */
+      .btn-neon {
+        background: #00ff88;
+        color: #0a0a0a;
+        font-weight: 700;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-neon::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+      .btn-neon:hover::before {
+        left: 100%;
+      }
+      .btn-neon:hover {
+        background: #00cc6a;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        transform: translateY(-2px);
+      }
+
+      /* ── Gradient border ── */
+      .gradient-border {
+        position: relative;
+      }
+      .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 255, 136, 0.4),
+          transparent,
+          rgba(0, 255, 136, 0.1)
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      /* ── Hero gradients ── */
+      .hero-gradient {
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 136, 0.08) 0%,
+          transparent 60%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+        animation: float 8s ease-in-out infinite;
+        z-index: 0;
+      }
+      .hero-gradient-2 {
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 255, 136, 0.04) 0%,
+          transparent 60%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+        animation: float 12s ease-in-out infinite reverse;
+        z-index: 0;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) scale(1);
+        }
+        50% {
+          transform: translateY(-30px) scale(1.05);
+        }
+      }
+
+      /* ── Pulse neon ── */
+      @keyframes pulse-neon {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 12px rgba(0, 255, 136, 0);
+        }
+      }
+      .pulse-neon {
+        animation: pulse-neon 2s infinite;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #00ff88;
+        border-radius: 2px;
+      }
+
+      /* ── Photo placeholder ── */
+      .photo-placeholder {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 255, 136, 0.1),
+          rgba(0, 255, 136, 0.02)
+        );
+        border: 2px dashed rgba(0, 255, 136, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: rgba(0, 255, 136, 0.5);
+        text-align: center;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* ── Step number ── */
+      .step-number {
+        font-size: 72px;
+        font-weight: 900;
+        color: rgba(0, 255, 136, 0.06);
+        line-height: 1;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        pointer-events: none;
+      }
+
+      /* ── Badge ── */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+      }
+
+      /* ── Card hover ── */
+      .card-hover {
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-6px);
+        border-color: rgba(0, 255, 136, 0.3) !important;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          0 0 30px rgba(0, 255, 136, 0.05);
+      }
+
+      /* ── Pain item ── */
+      .pain-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 12px;
+        background: rgba(255, 59, 48, 0.05);
+        border: 1px solid rgba(255, 59, 48, 0.1);
+        transition: all 0.3s ease;
+      }
+      .pain-item:hover {
+        background: rgba(255, 59, 48, 0.08);
+      }
+
+      /* ── WhatsApp float ── */
+      .whatsapp-float {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9997; /* Abaixo do cursor, acima de tudo mais */
+        width: 56px;
+        height: 56px;
+        background: #25d366;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+        transition: transform 0.3s ease;
+        animation: pulse-whatsapp 3s infinite;
+      }
+      .whatsapp-float:hover {
+        transform: scale(1.1);
+      }
+      @keyframes pulse-whatsapp {
+        0%,
+        100% {
+          box-shadow:
+            0 4px 20px rgba(37, 211, 102, 0.4),
+            0 0 0 0 rgba(37, 211, 102, 0.3);
+        }
+        50% {
+          box-shadow:
+            0 4px 20px rgba(37, 211, 102, 0.4),
+            0 0 0 12px rgba(37, 211, 102, 0);
+        }
+      }
+
+      /* ── Mobile ── */
+      @media (max-width: 768px) {
+        body {
+          cursor: auto;
+        }
+        .cursor,
+        .cursor-glow {
+          display: none;
+        }
+        a,
+        button {
+          cursor: pointer;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- WhatsApp Float -->
+    <a
+      href="https://wa.me/5531983207258?text=Olá%20Rafael!%20Vi%20seu%20site%20e%20quero%20saber%20mais%20sobre%20landing%20pages%20para%20minha%20clínica."
+      class="whatsapp-float"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="WhatsApp"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        ></path>
+      </svg>
+    </a>
+
+    <!-- ══════════ HERO ══════════ -->
+    <section
+      id="hero"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden px-6 py-24"
+    >
+      <div class="hero-gradient"></div>
+      <div class="hero-gradient-2"></div>
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+          background-size: 60px 60px;
+          pointer-events: none;
+          z-index: 0;
+        "
+      ></div>
+
+      <!-- FIX: sem opacity-0 no HTML — GSAP controla via set() -->
+      <div
+        class="max-w-5xl mx-auto text-center"
+        style="position: relative; z-index: 2"
+      >
+        <div class="badge mb-8 mx-auto w-fit hero-badge">
+          <span>●</span><span>Especialista em Landing Pages para Clínicas</span>
+        </div>
+
+        <h1
+          class="text-5xl md:text-7xl lg:text-8xl font-black leading-none tracking-tight hero-title mb-6"
+        >
+          Sua clínica não<br />
+          <span class="neon-text">lota por acaso.</span>
+        </h1>
+
+        <p
+          class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 hero-sub leading-relaxed"
+        >
+          Cada real investido em anúncios merece uma página que
+          <strong class="text-white">converte cliques em agendamentos</strong>.
+          Landing pages feitas sob medida para clínicas que querem resultados de
+          verdade.
+        </p>
+
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center items-center hero-cta"
+        >
+          <a
+            href="https://wa.me/5531983207258?text=Olá%20Rafael!%20Quero%20uma%20landing%20page%20para%20minha%20clínica."
+            target="_blank"
+            class="btn-neon pulse-neon px-8 py-4 text-base font-bold rounded-xl inline-flex items-center gap-3"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+              ></path>
+            </svg>
+            Quero minha Landing Page
+          </a>
+          <a
+            href="#como-funciona"
+            class="glass px-8 py-4 text-base font-semibold rounded-xl text-gray-300 hover:text-white transition-all duration-300 inline-flex items-center gap-2"
+          >
+            Como funciona
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <div class="mt-16 flex flex-col items-center gap-2 hero-scroll">
+          <span class="text-xs text-gray-600 uppercase tracking-widest"
+            >Role para ver mais</span
+          >
+          <div
+            style="
+              width: 1px;
+              height: 40px;
+              background: linear-gradient(
+                to bottom,
+                rgba(0, 255, 136, 0.5),
+                transparent
+              );
+            "
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ STATS ══════════ -->
+    <section class="py-16 px-6">
+      <div class="max-w-4xl mx-auto">
+        <div
+          class="glass gradient-border rounded-2xl p-8 md:p-12 grid grid-cols-2 md:grid-cols-4 gap-8 stats-section"
+        >
+          <div class="text-center stat-item">
+            <div class="text-4xl md:text-5xl font-black neon-text">
+              <span class="counter" data-target="48">0</span>h
+            </div>
+            <div class="text-xs text-gray-500 mt-2 uppercase tracking-wider">
+              Prazo de entrega
+            </div>
+          </div>
+          <div class="text-center stat-item">
+            <div class="text-4xl md:text-5xl font-black neon-text">
+              100<span class="text-2xl">%</span>
+            </div>
+            <div class="text-xs text-gray-500 mt-2 uppercase tracking-wider">
+              PageSpeed Score
+            </div>
+          </div>
+          <div class="text-center stat-item">
+            <div class="text-4xl md:text-5xl font-black neon-text">
+              30<span class="text-2xl">d</span>
+            </div>
+            <div class="text-xs text-gray-500 mt-2 uppercase tracking-wider">
+              De garantia
+            </div>
+          </div>
+          <div class="text-center stat-item">
+            <div class="text-4xl md:text-5xl font-black neon-text">
+              R$<span class="counter" data-target="997">0</span>
+            </div>
+            <div class="text-xs text-gray-500 mt-2 uppercase tracking-wider">
+              Pacote Starter
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ PAIN ══════════ -->
+    <section class="py-20 px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 pain-header">
+          <div class="badge mb-4 mx-auto w-fit">Realidade dolorosa</div>
+          <h2 class="text-4xl md:text-5xl font-black leading-tight">
+            Sua clínica investe em anúncios.<br />
+            <span class="text-gray-500">Mas a página desperdiça tudo.</span>
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="pain-item pain-card">
+            <span class="text-red-400 text-xl mt-0.5 flex-shrink-0">✗</span>
+            <div>
+              <p class="font-semibold text-white">Página lenta demais</p>
+              <p class="text-gray-500 text-sm mt-1">
+                Cada segundo extra custa até 20% das conversões. Pacientes
+                fecham antes de ver sua oferta.
+              </p>
+            </div>
+          </div>
+          <div class="pain-item pain-card">
+            <span class="text-red-400 text-xl mt-0.5 flex-shrink-0">✗</span>
+            <div>
+              <p class="font-semibold text-white">Sem integração com pixel</p>
+              <p class="text-gray-500 text-sm mt-1">
+                Sem rastreamento correto, o Meta e Google não conseguem otimizar
+                para quem vai agendar.
+              </p>
+            </div>
+          </div>
+          <div class="pain-item pain-card">
+            <span class="text-red-400 text-xl mt-0.5 flex-shrink-0">✗</span>
+            <div>
+              <p class="font-semibold text-white">
+                Design genérico e sem confiança
+              </p>
+              <p class="text-gray-500 text-sm mt-1">
+                Uma página amadora passa insegurança. O paciente vai para o
+                concorrente ao lado.
+              </p>
+            </div>
+          </div>
+          <div class="pain-item pain-card">
+            <span class="text-red-400 text-xl mt-0.5 flex-shrink-0">✗</span>
+            <div>
+              <p class="font-semibold text-white">CTA fraco ou confuso</p>
+              <p class="text-gray-500 text-sm mt-1">
+                Sem um caminho claro, o paciente simplesmente vai embora.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ HOW IT WORKS ══════════ -->
+    <section id="como-funciona" class="py-20 px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 how-header">
+          <div class="badge mb-4 mx-auto w-fit">Processo simples</div>
+          <h2 class="text-4xl md:text-5xl font-black">
+            Do briefing ao ar em <span class="neon-text">48 horas</span>
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div
+            class="glass gradient-border rounded-2xl p-8 relative card-hover step-card"
+          >
+            <div class="step-number">01</div>
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 relative z-10"
+              style="
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid rgba(0, 255, 136, 0.2);
+              "
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 relative z-10">
+              Briefing por WhatsApp
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed relative z-10">
+              Você me manda os detalhes da sua clínica, oferta e público. Uma
+              conversa de 15 minutos resolve tudo.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-8 relative card-hover step-card"
+          >
+            <div class="step-number">02</div>
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 relative z-10"
+              style="
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid rgba(0, 255, 136, 0.2);
+              "
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 relative z-10">
+              Desenvolvimento em 48h
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed relative z-10">
+              Design profissional, copy focada em conversão e todas as
+              integrações configuradas e testadas.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-8 relative card-hover step-card"
+          >
+            <div class="step-number">03</div>
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 relative z-10"
+              style="
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid rgba(0, 255, 136, 0.2);
+              "
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 relative z-10">
+              No ar e convertendo
+            </h3>
+            <p class="text-gray-500 text-sm leading-relaxed relative z-10">
+              Publicamos no seu domínio ou cuidamos de tudo. Página pronta para
+              encher sua agenda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ INCLUDES ══════════ -->
+    <section
+      class="py-20 px-6"
+      style="
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(0, 255, 136, 0.02),
+          transparent
+        );
+      "
+    >
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 includes-header">
+          <div class="badge mb-4 mx-auto w-fit">O que está incluso</div>
+          <h2 class="text-4xl md:text-5xl font-black">
+            Tudo que sua clínica<br /><span class="neon-text"
+              >precisa para converter</span
+            >
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item md:col-span-2"
+          >
+            <div class="flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center"
+                style="background: rgba(0, 255, 136, 0.1)"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#00ff88"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1">
+                  Velocidade máxima — PageSpeed 95+
+                </h4>
+                <p class="text-gray-500 text-sm">
+                  Código limpo que carrega em menos de 2 segundos. Mais
+                  velocidade = mais conversão = custo por clique menor.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item"
+          >
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+              style="background: rgba(0, 255, 136, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+            </div>
+            <h4 class="font-bold mb-1">Mobile-first</h4>
+            <p class="text-gray-500 text-sm">
+              +68% do tráfego vem do celular. Perfeito em qualquer tela.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item"
+          >
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+              style="background: rgba(0, 255, 136, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-bold mb-1">Meta Pixel</h4>
+            <p class="text-gray-500 text-sm">
+              Rastreamento completo para Facebook e Instagram Ads.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item md:col-span-2"
+          >
+            <div class="flex items-start gap-4">
+              <div
+                class="w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center"
+                style="background: rgba(0, 255, 136, 0.1)"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#00ff88"
+                  stroke-width="2"
+                >
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold mb-1">Google Tag Manager + Analytics</h4>
+                <p class="text-gray-500 text-sm">
+                  Rastreamento de conversões do Google Ads. Você vê quantos
+                  agendamentos vieram de cada anúncio.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item"
+          >
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+              style="background: rgba(37, 211, 102, 0.1)"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-bold mb-1">Botão WhatsApp</h4>
+            <p class="text-gray-500 text-sm">
+              CTA direto com mensagem personalizada.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item"
+          >
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+              style="background: rgba(0, 255, 136, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="3"></circle>
+                <path
+                  d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-bold mb-1">SSL + CDN global</h4>
+            <p class="text-gray-500 text-sm">
+              Hospedagem segura e ultrarrápida via Cloudflare.
+            </p>
+          </div>
+          <div
+            class="glass gradient-border rounded-2xl p-6 card-hover include-item"
+          >
+            <div
+              class="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+              style="background: rgba(0, 255, 136, 0.1)"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#00ff88"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h4 class="font-bold mb-1">30 dias de garantia</h4>
+            <p class="text-gray-500 text-sm">
+              Suporte completo após entrega sem custo adicional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ PRICING ══════════ -->
+    <section id="pacotes" class="py-20 px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16 pricing-header">
+          <div class="badge mb-4 mx-auto w-fit">Investimento</div>
+          <h2 class="text-4xl md:text-5xl font-black">
+            Você só tem<br /><span class="neon-text">duas opções.</span>
+          </h2>
+          <p class="text-gray-500 mt-4 max-w-xl mx-auto">
+            Não decidir também é uma decisão — e ela tem um custo alto todo mês.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 items-stretch">
+          <!-- ── Opção 1: Continuar perdendo ── -->
+          <div
+            class="pricing-card rounded-2xl p-8 relative flex flex-col"
+            style="
+              background: rgba(255, 59, 48, 0.04);
+              border: 1px solid rgba(255, 59, 48, 0.15);
+            "
+          >
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 w-fit"
+              style="
+                background: rgba(255, 59, 48, 0.1);
+                border: 1px solid rgba(255, 59, 48, 0.2);
+                color: #ff6b6b;
+              "
+            >
+              😬 Continuar como está
+            </div>
+
+            <h3 class="text-2xl font-black mb-2 text-white">Não fazer nada</h3>
+            <p class="text-sm mb-6" style="color: rgba(255, 107, 107, 0.7)">
+              O preço que você já paga todo mês sem perceber.
+            </p>
+
+            <!-- "Preço" da inação -->
+            <div
+              class="mb-6 p-4 rounded-xl"
+              style="
+                background: rgba(255, 59, 48, 0.07);
+                border: 1px solid rgba(255, 59, 48, 0.1);
+              "
+            >
+              <div
+                class="text-xs uppercase tracking-wider mb-2"
+                style="color: rgba(255, 107, 107, 0.6)"
+              >
+                Você investe em anúncios
+              </div>
+              <div class="text-4xl font-black" style="color: #ff6b6b">
+                R$1.500<span class="text-xl">/mês</span>
+              </div>
+              <div class="text-xs mt-1" style="color: rgba(255, 107, 107, 0.5)">
+                Indo direto pro ralo com página ruim
+              </div>
+            </div>
+
+            <ul class="space-y-3 mb-8 flex-1">
+              <li class="flex items-start gap-3 text-sm">
+                <span class="mt-0.5 flex-shrink-0" style="color: #ff6b6b"
+                  >✗</span
+                >
+                <span class="text-gray-500"
+                  >Página lenta afastando pacientes antes de ver sua
+                  oferta</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-sm">
+                <span class="mt-0.5 flex-shrink-0" style="color: #ff6b6b"
+                  >✗</span
+                >
+                <span class="text-gray-500"
+                  >Pixel mal configurado — o Meta não sabe otimizar seus
+                  anúncios</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-sm">
+                <span class="mt-0.5 flex-shrink-0" style="color: #ff6b6b"
+                  >✗</span
+                >
+                <span class="text-gray-500"
+                  >Concorrentes com página melhor ficando com os seus
+                  pacientes</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-sm">
+                <span class="mt-0.5 flex-shrink-0" style="color: #ff6b6b"
+                  >✗</span
+                >
+                <span class="text-gray-500"
+                  >Agenda vazia enquanto o custo dos anúncios só aumenta</span
+                >
+              </li>
+              <li class="flex items-start gap-3 text-sm">
+                <span class="mt-0.5 flex-shrink-0" style="color: #ff6b6b"
+                  >✗</span
+                >
+                <span class="text-gray-500"
+                  >Pagando R$18.000/ano em tráfego que não converte</span
+                >
+              </li>
+            </ul>
+
+            <!-- Custo acumulado -->
+            <div
+              class="p-4 rounded-xl text-center"
+              style="
+                background: rgba(255, 59, 48, 0.08);
+                border: 1px solid rgba(255, 59, 48, 0.12);
+              "
+            >
+              <div
+                class="text-xs uppercase tracking-wider mb-1"
+                style="color: rgba(255, 107, 107, 0.6)"
+              >
+                Prejuízo acumulado em 12 meses
+              </div>
+              <div class="text-3xl font-black" style="color: #ff6b6b">
+                − R$18.000
+              </div>
+              <div class="text-xs mt-1" style="color: rgba(255, 107, 107, 0.4)">
+                em anúncios desperdiçados
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Opção 2: Landing Page Profissional ── -->
+          <div
+            class="glass-neon gradient-border rounded-2xl p-8 relative card-hover pricing-card flex flex-col"
+          >
+            <!-- Destaque -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+              <div
+                class="badge px-4 py-1.5 text-xs font-bold whitespace-nowrap"
+                style="
+                  background: #00ff88;
+                  color: #0a0a0a;
+                  border: none;
+                  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+                "
+              >
+                ✦ Decisão inteligente
+              </div>
+            </div>
+
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 w-fit"
+              style="
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid rgba(0, 255, 136, 0.2);
+                color: #00ff88;
+              "
+            >
+              🚀 Starter
+            </div>
+
+            <h3 class="text-2xl font-black mb-2">Landing Page Profissional</h3>
+            <p class="text-gray-500 text-sm mb-6">
+              Pague uma vez. Converta para sempre.
+            </p>
+
+            <div class="mb-6">
+              <div class="flex items-end gap-3">
+                <span class="text-5xl font-black neon-text">R$997</span>
+                <div class="mb-1.5">
+                  <div class="text-xs line-through text-gray-600">
+                    vs R$18k/ano perdidos
+                  </div>
+                  <div class="text-xs text-gray-500">pagamento único</div>
+                </div>
+              </div>
+            </div>
+
+            <ul class="space-y-3 mb-6 flex-1">
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >Landing page completa e responsiva</span
+                >
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >Copy focada em conversão incluída</span
+                >
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >Meta Pixel + Google Ads Tag configurados</span
+                >
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >Botão WhatsApp com mensagem personalizada</span
+                >
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >SSL + CDN Cloudflare — hospedagem grátis</span
+                >
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300">Entrega em até 48 horas</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <span class="neon-text font-bold">✓</span
+                ><span class="text-gray-300"
+                  >30 dias de garantia e suporte</span
+                >
+              </li>
+            </ul>
+
+            <!-- Add-on Manutenção -->
+            <div
+              class="mb-6 p-4 rounded-xl"
+              style="
+                background: rgba(0, 255, 136, 0.04);
+                border: 1px dashed rgba(0, 255, 136, 0.2);
+              "
+            >
+              <div class="flex items-start gap-3">
+                <div
+                  class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style="
+                    background: rgba(0, 255, 136, 0.15);
+                    border: 1px solid rgba(0, 255, 136, 0.3);
+                  "
+                >
+                  <span class="text-xs" style="color: #00ff88">+</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-sm font-semibold text-white"
+                      >Add-on: Manutenção Mensal</span
+                    >
+                    <span class="text-sm font-bold neon-text">+R$350/mês</span>
+                  </div>
+                  <p class="text-xs text-gray-500 leading-relaxed">
+                    Atualizações de oferta, verificação de pixels, troca de
+                    imagens sazonais e suporte via WhatsApp. Disponível
+                    exclusivamente para clientes Starter.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="https://wa.me/5531983207258?text=Olá%20Rafael!%20Quero%20o%20pacote%20Starter%20de%20landing%20page%20para%20minha%20clínica."
+              target="_blank"
+              class="btn-neon w-full py-4 text-center block font-bold text-base rounded-xl"
+            >
+              Quero parar de perder pacientes
+            </a>
+
+            <p class="text-center text-xs text-gray-600 mt-3">
+              Sem mensalidade obrigatória · Entrega em 48h
+            </p>
+          </div>
+        </div>
+
+        <!-- Nota rodapé -->
+        <p class="text-center text-gray-700 text-sm mt-8 pricing-note">
+          Cada dia sem uma página que converte é mais um dia pagando por
+          anúncios que não retornam.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════ ABOUT ══════════ -->
+    <section
+      id="sobre"
+      class="py-20 px-6"
+      style="
+        background: linear-gradient(
+          180deg,
+          transparent,
+          rgba(0, 255, 136, 0.02),
+          transparent
+        );
+      "
+    >
+      <div class="max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="flex justify-center about-photo">
+            <div class="relative">
+              <div
+                style="
+                  position: absolute;
+                  inset: -12px;
+                  border-radius: 50%;
+                  background: radial-gradient(
+                    circle,
+                    rgba(0, 255, 136, 0.15) 0%,
+                    transparent 70%
+                  );
+                "
+              ></div>
+              <div class="photo-placeholder">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(0,255,136,0.4)"
+                  stroke-width="1.5"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <img
+                  src="rafael.webp"
+                  alt="Rafael Alves"
+                  style="
+                    width: 280px;
+                    height: 280px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 2px solid rgba(0, 255, 136, 0.3);
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="about-text">
+            <div class="badge mb-6">👋 Sobre mim</div>
+            <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">
+              Sou o seu<br />
+              <span class="neon-text">sobrinho tech</span><br />
+              de aluguel.
+            </h2>
+            <p class="text-gray-400 leading-relaxed mb-4">
+              Sabe aquele sobrinho que a família inteira liga quando o
+              computador trava? Sou eu — mas para o seu negócio, e de forma
+              profissional.
+            </p>
+            <p class="text-gray-400 leading-relaxed mb-4">
+              Sou <strong class="text-white">Rafael Alves</strong>,
+              desenvolvedor especializado em criar páginas que vendem de verdade
+              para clínicas. Sem enrolação, sem jargão técnico — você me conta o
+              problema, eu resolvo.
+            </p>
+            <p class="text-gray-400 leading-relaxed mb-8">
+              Enquanto você cuida dos seus pacientes, eu cuido de transformar
+              cada clique dos seus anúncios em uma consulta agendada.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div
+                class="glass gradient-border rounded-xl p-4 text-center flex-1"
+              >
+                <div class="text-2xl font-black neon-text">48h</div>
+                <div class="text-xs text-gray-500 mt-1">Prazo de entrega</div>
+              </div>
+              <div
+                class="glass gradient-border rounded-xl p-4 text-center flex-1"
+              >
+                <div class="text-2xl font-black neon-text">100%</div>
+                <div class="text-xs text-gray-500 mt-1">Foco em clínicas</div>
+              </div>
+              <div
+                class="glass gradient-border rounded-xl p-4 text-center flex-1"
+              >
+                <div class="text-2xl font-black neon-text">30d</div>
+                <div class="text-xs text-gray-500 mt-1">Garantia real</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ FINAL CTA ══════════ -->
+    <section class="py-24 px-6 relative overflow-hidden">
+      <div
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 600px;
+          height: 300px;
+          background: radial-gradient(
+            ellipse,
+            rgba(0, 255, 136, 0.08) 0%,
+            transparent 70%
+          );
+          pointer-events: none;
+          z-index: 0;
+        "
+      ></div>
+      <div
+        class="max-w-3xl mx-auto text-center cta-final"
+        style="position: relative; z-index: 2"
+      >
+        <div class="badge mb-6 mx-auto w-fit">🚀 Pronto para começar?</div>
+        <h2 class="text-5xl md:text-6xl font-black mb-6 leading-tight">
+          Sua agenda<br />
+          <span class="neon-text">cheia espera</span><br />
+          por uma página.
+        </h2>
+        <p class="text-gray-500 text-lg mb-10 max-w-xl mx-auto">
+          Fale comigo agora. Em 15 minutos você entende como posso transformar
+          os cliques dos seus anúncios em pacientes reais.
+        </p>
+        <a
+          href="https://wa.me/5531983207258?text=Olá%20Rafael!%20Quero%20uma%20landing%20page%20para%20minha%20clínica."
+          target="_blank"
+          class="btn-neon pulse-neon px-10 py-5 text-lg font-black rounded-xl inline-flex items-center gap-3"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+            ></path>
+          </svg>
+          Falar com Rafael agora
+        </a>
+        <p class="text-gray-700 text-sm mt-6">
+          Resposta em até 2 horas · Sem compromisso
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="py-8 px-6 border-t border-white/5">
+      <div
+        class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"
+      >
+        <span class="text-gray-600 text-sm"
+          >© 2026 Rafael Alves · falveshub.com</span
+        >
+        <span class="text-gray-700 text-sm"
+          >Landing Pages para Clínicas · Belo Horizonte, MG</span
+        >
+      </div>
+    </footer>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // ══════════════════════════════════════════════════════
+      // FIX PRINCIPAL: gsap.set() define estado inicial
+      // gsap.to() anima para o estado visível
+      // Nunca mais conflita com classes Tailwind
+      // ══════════════════════════════════════════════════════
+      gsap.set(".hero-badge", { opacity: 0, y: 20 });
+      gsap.set(".hero-title", { opacity: 0, y: 60 });
+      gsap.set(".hero-sub", { opacity: 0, y: 30 });
+      gsap.set(".hero-cta", { opacity: 0, y: 20 });
+      gsap.set(".hero-scroll", { opacity: 0 });
+      gsap.set(".stat-item", { opacity: 0, y: 30 });
+      gsap.set(".pain-header", { opacity: 0, y: 40 });
+      gsap.set(".pain-card", { opacity: 0, y: 30 });
+      gsap.set(".how-header", { opacity: 0, y: 40 });
+      gsap.set(".step-card", { opacity: 0, y: 50 });
+      gsap.set(".includes-header", { opacity: 0, y: 40 });
+      gsap.set(".include-item", { opacity: 0, y: 25 });
+      gsap.set(".pricing-header", { opacity: 0, y: 40 });
+      gsap.set(".pricing-card", { opacity: 0, y: 40 });
+      gsap.set(".pricing-note", { opacity: 0 });
+      gsap.set(".about-photo", { opacity: 0, x: -50 });
+      gsap.set(".about-text", { opacity: 0, x: 50 });
+      gsap.set(".cta-final", { opacity: 0, y: 50 });
+
+      const triggerStart = window.innerWidth < 768 ? "15% bottom" : "top 82%";
+
+      // ── Cursor ──
+      const cursor = document.getElementById("cursor");
+      const cursorGlow = document.getElementById("cursorGlow");
+      document.addEventListener("mousemove", (e) => {
+        gsap.to(cursor, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.15,
+          ease: "power2.out",
+        });
+        gsap.to(cursorGlow, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.6,
+          ease: "power2.out",
+        });
+      });
+      document.querySelectorAll("a, button").forEach((el) => {
+        el.addEventListener("mouseenter", () =>
+          gsap.to(cursor, { scale: 3, duration: 0.3 }),
+        );
+        el.addEventListener("mouseleave", () =>
+          gsap.to(cursor, { scale: 1, duration: 0.3 }),
+        );
+      });
+
+      // ── Hero (timeline com to()) ──
+      gsap
+        .timeline({ delay: 0.2 })
+        .to(".hero-badge", {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+        })
+        .to(
+          ".hero-title",
+          { opacity: 1, y: 0, duration: 1, ease: "power4.out" },
+          "-=0.4",
+        )
+        .to(
+          ".hero-sub",
+          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+          "-=0.6",
+        )
+        .to(
+          ".hero-cta",
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+          "-=0.5",
+        )
+        .to(".hero-scroll", { opacity: 1, duration: 0.6 }, "-=0.3");
+
+      // ── Stats ──
+      ScrollTrigger.create({
+        trigger: ".stats-section",
+        start: "top 80%",
+        once: true,
+        onEnter: () =>
+          gsap.to(".stat-item", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Counters ──
+      document.querySelectorAll(".counter").forEach((el) => {
+        const target = +el.dataset.target;
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 85%",
+          once: true,
+          onEnter: () =>
+            gsap.to(
+              { v: 0 },
+              {
+                v: target,
+                duration: 2,
+                ease: "power2.out",
+                onUpdate() {
+                  el.textContent = Math.round(this.targets()[0].v);
+                },
+              },
+            ),
+        });
+      });
+
+      // ── Stats ──
+      ScrollTrigger.create({
+        trigger: ".stats-section",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".stat-item", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Counters ──
+      document.querySelectorAll(".counter").forEach((el) => {
+        const target = +el.dataset.target;
+        ScrollTrigger.create({
+          trigger: el,
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(
+              { v: 0 },
+              {
+                v: target,
+                duration: 2,
+                ease: "power2.out",
+                onUpdate() {
+                  el.textContent = Math.round(this.targets()[0].v);
+                },
+              },
+            ),
+        });
+      });
+
+      // ── Pain ──
+      ScrollTrigger.create({
+        trigger: ".pain-header",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".pain-header", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".pain-card",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".pain-card", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.12,
+            duration: 0.6,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── How it works ──
+      ScrollTrigger.create({
+        trigger: ".how-header",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".how-header", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".step-card",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".step-card", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Includes ──
+      ScrollTrigger.create({
+        trigger: ".includes-header",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".includes-header", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".include-item",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".include-item", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Pricing ──
+      ScrollTrigger.create({
+        trigger: ".pricing-header",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".pricing-header", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".pricing-card",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".pricing-card", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".pricing-note",
+        start: triggerStart,
+        once: true,
+        onEnter: () => gsap.to(".pricing-note", { opacity: 1, duration: 0.6 }),
+      });
+
+      // ── About ──
+      ScrollTrigger.create({
+        trigger: ".about-photo",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".about-photo", {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+          }),
+      });
+      ScrollTrigger.create({
+        trigger: ".about-text",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".about-text", {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Final CTA ──
+      ScrollTrigger.create({
+        trigger: ".cta-final",
+        start: triggerStart,
+        once: true,
+        onEnter: () =>
+          gsap.to(".cta-final", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          }),
+      });
+
+      // ── Reduced motion ──
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.globalTimeline.timeScale(0);
+        document
+          .querySelectorAll('[style*="opacity: 0"]')
+          .forEach((el) => (el.style.opacity = "1"));
+      }
+    </script>
+  </body>
+</html>
