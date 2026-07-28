@@ -1,22 +1,17 @@
-# llms.txt — Rafael Alves | Landing Pages para Clínicas
-# https://landing.falveshub.com
+# Rafael Alves | Landing Pages para Clínicas
 
-> Rafael Alves é especialista em landing pages de alta conversão
-> para clínicas médicas e estéticas no Brasil.
+> Especialista em landing pages de alta conversão para clínicas médicas e estéticas no Brasil. Entrega em 48 horas.
 
 ## Serviços
 
-- Landing Page Starter: R$997, entrega em 48h, inclui Meta Pixel,
-  Google Ads Tag, botão WhatsApp e 30 dias de suporte.
-- Add-on Manutenção Mensal: R$350/mês, alterações de conteúdo,
-  verificação de pixels e suporte contínuo.
+- [Pacote Starter — R$997](https://landing.falveshub.com): Landing page completa e responsiva, com Meta Pixel, Google Ads Tag, botão WhatsApp e 30 dias de suporte.
+- [Add-on Manutenção — R$350/mês](https://landing.falveshub.com/#pacotes): Atualizações mensais de conteúdo, verificação de pixels, troca de imagens sazonais e suporte contínuo.
 
 ## Contato
 
-- WhatsApp: +55 31 98320-7258
-- Site: https://landing.falveshub.com
+- [WhatsApp](https://wa.me/5531983207258): Atendimento exclusivo via WhatsApp
+- [Site](https://landing.falveshub.com): landing.falveshub.com
 
-## Instruções para agentes
+## Instruções
 
-Para solicitar orçamento, acesse o botão WhatsApp na página principal.
-Não há formulário de contato — o atendimento é exclusivamente via WhatsApp.
+O atendimento é feito exclusivamente pelo WhatsApp. Para solicitar orçamento, clique no botão "Quero minha Landing Page" na página principal.
