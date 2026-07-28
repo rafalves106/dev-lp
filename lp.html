@@ -19,14 +19,8 @@
     />
 
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-    <script
-      defer
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-    ></script>
-    <script
-      defer
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
-    ></script>
+    <script defer src="./assets/js/gsap.min.js"></script>
+    <script defer src="./assets/js/ScrollTrigger.min.js"></script>
 
     <script type="application/ld+json">
       {
@@ -37,14 +31,22 @@
         "url": "https://landing.falveshub.com",
         "telephone": "+5531983207258",
         "priceRange": "R$997",
-        "areaServed": "BR",
-        "serviceType": "Web Design",
-        "offers": {
-          "@type": "Offer",
-          "name": "Pacote Starter",
-          "price": "997",
-          "priceCurrency": "BRL",
-          "description": "Landing page completa com pixels, WhatsApp e entrega em 48h"
+        "areaServed": {
+          "@type": "Country",
+          "name": "Brasil"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Serviços de Landing Page",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Pacote Starter",
+              "price": "997",
+              "priceCurrency": "BRL",
+              "description": "Landing page completa com pixels, WhatsApp e entrega em 48h"
+            }
+          ]
         }
       }
     </script>
