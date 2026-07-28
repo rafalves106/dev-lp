@@ -8,18 +8,16 @@
       content="Landing pages de alta conversão para clínicas. Transforme cliques em agendamentos."
     />
 
-    <!-- 1. CSS primeiro — não bloqueia render -->
     <link rel="stylesheet" href="./assets/style.min.css" />
 
-    <!-- 2. Fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+      rel="preload"
+      href="./assets/fonts/inter-v20-latin-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
-    <!-- 3. Scripts por último, com defer -->
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <script
       defer
@@ -31,6 +29,34 @@
     ></script>
 
     <style>
+      /* inter-regular - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 400;
+        src: url("../assets/fonts/inter-v20-latin-regular.woff2")
+          format("woff2");
+      }
+
+      /* inter-700 - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 700;
+        src: url("../assets/fonts/inter-v20-latin-700.woff2") format("woff2");
+      }
+
+      /* inter-900 - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 900;
+        src: url("../assets/fonts/inter-v20-latin-900.woff2") format("woff2");
+      }
+
       * {
         margin: 0;
         padding: 0;
