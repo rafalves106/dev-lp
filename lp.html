@@ -8,36 +8,27 @@
       content="Landing pages de alta conversão para clínicas. Transforme cliques em agendamentos."
     />
 
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 1. CSS primeiro — não bloqueia render -->
+    <link rel="stylesheet" href="./assets/style.min.css" />
+
+    <!-- 2. Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
     />
 
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              neon: "#00ff88",
-              "neon-dim": "#00cc6a",
-            },
-            fontFamily: { sans: ["Inter", "sans-serif"] },
-          },
-        },
-      };
-    </script>
+    <!-- 3. Scripts por último, com defer -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    ></script>
 
     <style>
       * {
@@ -1314,284 +1305,287 @@
     </footer>
 
     <script>
-      gsap.registerPlugin(ScrollTrigger);
+      document.addEventListener("DOMContentLoaded", function () {
+        gsap.registerPlugin(ScrollTrigger);
 
-      // ══════════════════════════════════════════════════════
-      // FIX PRINCIPAL: gsap.set() define estado inicial
-      // gsap.to() anima para o estado visível
-      // Nunca mais conflita com classes Tailwind
-      // ══════════════════════════════════════════════════════
-      gsap.set(".hero-badge", { opacity: 0, y: 20 });
-      gsap.set(".hero-title", { opacity: 0, y: 60 });
-      gsap.set(".hero-sub", { opacity: 0, y: 30 });
-      gsap.set(".hero-cta", { opacity: 0, y: 20 });
-      gsap.set(".hero-scroll", { opacity: 0 });
-      gsap.set(".stat-item", { opacity: 0, y: 30 });
-      gsap.set(".pain-header", { opacity: 0, y: 40 });
-      gsap.set(".pain-card", { opacity: 0, y: 30 });
-      gsap.set(".how-header", { opacity: 0, y: 40 });
-      gsap.set(".step-card", { opacity: 0, y: 50 });
-      gsap.set(".includes-header", { opacity: 0, y: 40 });
-      gsap.set(".include-item", { opacity: 0, y: 25 });
-      gsap.set(".pricing-header", { opacity: 0, y: 40 });
-      gsap.set(".pricing-card", { opacity: 0, y: 40 });
-      gsap.set(".pricing-note", { opacity: 0 });
-      gsap.set(".about-photo", { opacity: 0, x: -50 });
-      gsap.set(".about-text", { opacity: 0, x: 50 });
-      gsap.set(".cta-final", { opacity: 0, y: 50 });
+        // ══════════════════════════════════════════════════════
+        // FIX PRINCIPAL: gsap.set() define estado inicial
+        // gsap.to() anima para o estado visível
+        // Nunca mais conflita com classes Tailwind
+        // ══════════════════════════════════════════════════════
+        gsap.set(".hero-badge", { opacity: 0, y: 20 });
+        gsap.set(".hero-title", { opacity: 0, y: 60 });
+        gsap.set(".hero-sub", { opacity: 0, y: 30 });
+        gsap.set(".hero-cta", { opacity: 0, y: 20 });
+        gsap.set(".hero-scroll", { opacity: 0 });
+        gsap.set(".stat-item", { opacity: 0, y: 30 });
+        gsap.set(".pain-header", { opacity: 0, y: 40 });
+        gsap.set(".pain-card", { opacity: 0, y: 30 });
+        gsap.set(".how-header", { opacity: 0, y: 40 });
+        gsap.set(".step-card", { opacity: 0, y: 50 });
+        gsap.set(".includes-header", { opacity: 0, y: 40 });
+        gsap.set(".include-item", { opacity: 0, y: 25 });
+        gsap.set(".pricing-header", { opacity: 0, y: 40 });
+        gsap.set(".pricing-card", { opacity: 0, y: 40 });
+        gsap.set(".pricing-note", { opacity: 0 });
+        gsap.set(".about-photo", { opacity: 0, x: -50 });
+        gsap.set(".about-text", { opacity: 0, x: 50 });
+        gsap.set(".cta-final", { opacity: 0, y: 50 });
 
-      const triggerStart = window.innerWidth < 768 ? "15% bottom" : "top 82%";
+        const triggerStart = window.innerWidth < 768 ? "15% bottom" : "top 82%";
 
-      // ── Cursor ──
-      const cursor = document.getElementById("cursor");
-      const cursorGlow = document.getElementById("cursorGlow");
-      document.addEventListener("mousemove", (e) => {
-        gsap.to(cursor, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.15,
-          ease: "power2.out",
+        // ── Cursor ──
+        const cursor = document.getElementById("cursor");
+        const cursorGlow = document.getElementById("cursorGlow");
+        document.addEventListener("mousemove", (e) => {
+          gsap.to(cursor, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0.15,
+            ease: "power2.out",
+          });
+          gsap.to(cursorGlow, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0.6,
+            ease: "power2.out",
+          });
         });
-        gsap.to(cursorGlow, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.6,
-          ease: "power2.out",
+        document.querySelectorAll("a, button").forEach((el) => {
+          el.addEventListener("mouseenter", () =>
+            gsap.to(cursor, { scale: 3, duration: 0.3 }),
+          );
+          el.addEventListener("mouseleave", () =>
+            gsap.to(cursor, { scale: 1, duration: 0.3 }),
+          );
         });
-      });
-      document.querySelectorAll("a, button").forEach((el) => {
-        el.addEventListener("mouseenter", () =>
-          gsap.to(cursor, { scale: 3, duration: 0.3 }),
-        );
-        el.addEventListener("mouseleave", () =>
-          gsap.to(cursor, { scale: 1, duration: 0.3 }),
-        );
-      });
 
-      // ── Hero (timeline com to()) ──
-      gsap
-        .timeline({ delay: 0.2 })
-        .to(".hero-badge", {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power3.out",
-        })
-        .to(
-          ".hero-title",
-          { opacity: 1, y: 0, duration: 1, ease: "power4.out" },
-          "-=0.4",
-        )
-        .to(
-          ".hero-sub",
-          { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-          "-=0.6",
-        )
-        .to(
-          ".hero-cta",
-          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
-          "-=0.5",
-        )
-        .to(".hero-scroll", { opacity: 1, duration: 0.6 }, "-=0.3");
-
-      // ── Stats ──
-      ScrollTrigger.create({
-        trigger: ".stats-section",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".stat-item", {
+        // ── Hero (timeline com to()) ──
+        gsap
+          .timeline({ delay: 0.2 })
+          .to(".hero-badge", {
             opacity: 1,
             y: 0,
-            stagger: 0.1,
-            duration: 0.6,
+            duration: 0.7,
             ease: "power3.out",
-          }),
-      });
+          })
+          .to(
+            ".hero-title",
+            { opacity: 1, y: 0, duration: 1, ease: "power4.out" },
+            "-=0.4",
+          )
+          .to(
+            ".hero-sub",
+            { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+            "-=0.6",
+          )
+          .to(
+            ".hero-cta",
+            { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+            "-=0.5",
+          )
+          .to(".hero-scroll", { opacity: 1, duration: 0.6 }, "-=0.3");
 
-      // ── Counters ──
-      document.querySelectorAll(".counter").forEach((el) => {
-        const target = +el.dataset.target;
+        // ── Stats ──
         ScrollTrigger.create({
-          trigger: el,
+          trigger: ".stats-section",
           start: triggerStart,
           once: true,
           onEnter: () =>
-            gsap.to(
-              { v: 0 },
-              {
-                v: target,
-                duration: 2,
-                ease: "power2.out",
-                onUpdate() {
-                  el.textContent = Math.round(this.targets()[0].v);
-                },
-              },
-            ),
+            gsap.to(".stat-item", {
+              opacity: 1,
+              y: 0,
+              stagger: 0.1,
+              duration: 0.6,
+              ease: "power3.out",
+            }),
         });
-      });
 
-      // ── Pain ──
-      ScrollTrigger.create({
-        trigger: ".pain-header",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".pain-header", {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".pain-card",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".pain-card", {
-            opacity: 1,
-            y: 0,
-            stagger: 0.12,
-            duration: 0.6,
-            ease: "power3.out",
-          }),
-      });
+        // ── Counters ──
+        document.querySelectorAll(".counter").forEach((el) => {
+          const target = +el.dataset.target;
+          ScrollTrigger.create({
+            trigger: el,
+            start: triggerStart,
+            once: true,
+            onEnter: () =>
+              gsap.to(
+                { v: 0 },
+                {
+                  v: target,
+                  duration: 2,
+                  ease: "power2.out",
+                  onUpdate() {
+                    el.textContent = Math.round(this.targets()[0].v);
+                  },
+                },
+              ),
+          });
+        });
 
-      // ── How it works ──
-      ScrollTrigger.create({
-        trigger: ".how-header",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".how-header", {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".step-card",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".step-card", {
-            opacity: 1,
-            y: 0,
-            stagger: 0.2,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
+        // ── Pain ──
+        ScrollTrigger.create({
+          trigger: ".pain-header",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".pain-header", {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".pain-card",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".pain-card", {
+              opacity: 1,
+              y: 0,
+              stagger: 0.12,
+              duration: 0.6,
+              ease: "power3.out",
+            }),
+        });
 
-      // ── Includes ──
-      ScrollTrigger.create({
-        trigger: ".includes-header",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".includes-header", {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".include-item",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".include-item", {
-            opacity: 1,
-            y: 0,
-            stagger: 0.1,
-            duration: 0.6,
-            ease: "power3.out",
-          }),
-      });
+        // ── How it works ──
+        ScrollTrigger.create({
+          trigger: ".how-header",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".how-header", {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".step-card",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".step-card", {
+              opacity: 1,
+              y: 0,
+              stagger: 0.2,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
 
-      // ── Pricing ──
-      ScrollTrigger.create({
-        trigger: ".pricing-header",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".pricing-header", {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".pricing-card",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".pricing-card", {
-            opacity: 1,
-            y: 0,
-            stagger: 0.15,
-            duration: 0.8,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".pricing-note",
-        start: triggerStart,
-        once: true,
-        onEnter: () => gsap.to(".pricing-note", { opacity: 1, duration: 0.6 }),
-      });
+        // ── Includes ──
+        ScrollTrigger.create({
+          trigger: ".includes-header",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".includes-header", {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".include-item",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".include-item", {
+              opacity: 1,
+              y: 0,
+              stagger: 0.1,
+              duration: 0.6,
+              ease: "power3.out",
+            }),
+        });
 
-      // ── About ──
-      ScrollTrigger.create({
-        trigger: ".about-photo",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".about-photo", {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: "power3.out",
-          }),
-      });
-      ScrollTrigger.create({
-        trigger: ".about-text",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".about-text", {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: "power3.out",
-          }),
-      });
+        // ── Pricing ──
+        ScrollTrigger.create({
+          trigger: ".pricing-header",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".pricing-header", {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".pricing-card",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".pricing-card", {
+              opacity: 1,
+              y: 0,
+              stagger: 0.15,
+              duration: 0.8,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".pricing-note",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".pricing-note", { opacity: 1, duration: 0.6 }),
+        });
 
-      // ── Final CTA ──
-      ScrollTrigger.create({
-        trigger: ".cta-final",
-        start: triggerStart,
-        once: true,
-        onEnter: () =>
-          gsap.to(".cta-final", {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-          }),
-      });
+        // ── About ──
+        ScrollTrigger.create({
+          trigger: ".about-photo",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".about-photo", {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: "power3.out",
+            }),
+        });
+        ScrollTrigger.create({
+          trigger: ".about-text",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".about-text", {
+              opacity: 1,
+              x: 0,
+              duration: 1,
+              ease: "power3.out",
+            }),
+        });
 
-      // ── Reduced motion ──
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.globalTimeline.timeScale(0);
-        document
-          .querySelectorAll('[style*="opacity: 0"]')
-          .forEach((el) => (el.style.opacity = "1"));
-      }
+        // ── Final CTA ──
+        ScrollTrigger.create({
+          trigger: ".cta-final",
+          start: triggerStart,
+          once: true,
+          onEnter: () =>
+            gsap.to(".cta-final", {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power3.out",
+            }),
+        });
+
+        // ── Reduced motion ──
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          gsap.globalTimeline.timeScale(0);
+          document
+            .querySelectorAll('[style*="opacity: 0"]')
+            .forEach((el) => (el.style.opacity = "1"));
+        }
+      });
     </script>
   </body>
 </html>
